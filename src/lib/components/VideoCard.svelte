@@ -9,13 +9,18 @@
 
 <div class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
   <!-- Thumbnail links to video -->
-  <a href={videoUrl} target="_blank" rel="noopener noreferrer" aria-label={creator.title}>
+  <a href={videoUrl} target="_blank" rel="noopener noreferrer" aria-label={creator.title} class="relative block">
     <img
       src={thumbnailUrl}
       alt={creator.title}
       class="aspect-video w-full object-cover transition-opacity hover:opacity-90"
       loading="lazy"
     />
+    {#if creator.duration}
+      <span class="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-xs font-medium tabular-nums text-white">
+        {creator.duration}
+      </span>
+    {/if}
   </a>
 
   <div class="p-3">

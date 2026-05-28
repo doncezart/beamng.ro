@@ -8,7 +8,6 @@
     { label: 'Discord', href: '/#discord' },
     { label: 'Creatori', href: '/#creatori' },
     { label: 'Roadmap', href: '/#roadmap' },
-    { label: 'Noutăți', href: '/#noutati' },
   ]
 
   let mobileOpen = $state(false)

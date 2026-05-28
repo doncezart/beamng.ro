@@ -8,9 +8,9 @@ export interface RoadmapItem {
 
 export const roadmapItems: RoadmapItem[] = [
   {
-    title: 'Server propriu BeamNG',
-    description: 'Lansarea primului server BeamMP românesc administrat de comunitate.',
-    status: 'Planificat',
+    title: 'Site BeamNG România',
+    description: 'Lansarea site-ului oficial al comunității cu informații despre servere, creatori și roadmap.',
+    status: 'Finalizat',
   },
   {
     title: 'Server Discord activ',
@@ -18,8 +18,8 @@ export const roadmapItems: RoadmapItem[] = [
     status: 'În lucru',
   },
   {
-    title: 'Turneu inaugural',
-    description: 'Primul turneu competitiv pentru membrii comunității.',
+    title: 'Server propriu BeamNG',
+    description: 'Lansarea primului server BeamMP românesc administrat de comunitate.',
     status: 'Planificat',
   },
   {
