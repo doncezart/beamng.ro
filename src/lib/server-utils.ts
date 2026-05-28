@@ -14,9 +14,9 @@ export function paginateServers(
 }
 
 export function countryCodeToFlag(code: string): string {
-  return code
-    .toUpperCase()
-    .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)))
+  const upper = code.toUpperCase()
+  if (upper.length !== 2) return '🏳'
+  return upper.replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)))
 }
 
 /** Returns 'green' | 'orange' | 'red' based on player fill percentage. */
@@ -25,6 +25,7 @@ export function playerBadgeColor(
   maxplayers: number
 ): 'green' | 'orange' | 'red' {
   const count = parseInt(players, 10) || 0
+  if (maxplayers <= 0) return 'green'
   if (count >= maxplayers) return 'red'
   if (count / maxplayers >= 0.8) return 'orange'
   return 'green'
