@@ -64,7 +64,7 @@ Single scrolling page with anchor-based navigation. Blog posts at a separate rou
 - **Data source:** `https://backend.beammp.com/servers-info` — JSON array fetched in `+page.ts` load function
 - **Romanian servers** (country code `"RO"`) shown prominently at top with orange "🇷🇴 Server Românesc" badge
 - **Empty state** for RO servers (expected initially): card with message "Niciun server românesc momentan — în curând!" with a roadmap teaser link
-- **Global server grid** below: paginated (20/page), each card shows:
+- **Global server grid** below: client-side pagination (20/page, `currentPage` state in component — no URL changes), each card shows:
   - Server name (truncated at 60 chars)
   - Map name
   - `players / maxplayers` badge (color: green if < 80% full, orange if ≥ 80%, red if full)
