@@ -22,12 +22,13 @@ export function countryCodeToFlag(code: string): string {
 /** Returns 'green' | 'orange' | 'red' based on player fill percentage. */
 export function playerBadgeColor(
   players: string,
-  maxplayers: number
+  maxplayers: string
 ): 'green' | 'orange' | 'red' {
   const count = parseInt(players, 10) || 0
-  if (maxplayers <= 0) return 'green'
-  if (count >= maxplayers) return 'red'
-  if (count / maxplayers >= 0.8) return 'orange'
+  const max = parseInt(maxplayers, 10) || 0
+  if (max <= 0) return 'green'
+  if (count >= max) return 'red'
+  if (count / max >= 0.8) return 'orange'
   return 'green'
 }
 

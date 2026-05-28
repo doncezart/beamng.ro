@@ -9,26 +9,37 @@ import {
 import type { BeamMPServer } from './types'
 
 const makeServer = (overrides: Partial<BeamMPServer> = {}): BeamMPServer => ({
+  ident: 'test1',
   ip: '1.2.3.4',
-  port: 30814,
-  name: 'Test Server',
+  port: '30814',
+  sname: 'Test Server',
   players: '5',
-  maxplayers: 20,
+  playerslist: '',
+  maxplayers: '20',
   map: 'gridmap_v2',
-  desc: '',
-  location: 'DE',
-  private: false,
+  modlist: '',
+  modstotal: '0',
+  modstotalsize: '0',
   official: false,
-  modded: false,
+  featured: false,
+  partner: false,
+  password: false,
+  guests: true,
+  location: 'DE',
+  tags: '',
+  version: '3.9.2',
+  cversion: '2.7',
+  owner: 'test#0',
+  sdesc: '',
   ...overrides,
 })
 
 describe('filterRoServers', () => {
   it('returns only servers with location "RO"', () => {
     const servers = [
-      makeServer({ location: 'RO', name: 'Romanian 1' }),
-      makeServer({ location: 'DE', name: 'German' }),
-      makeServer({ location: 'RO', name: 'Romanian 2' }),
+      makeServer({ location: 'RO', sname: 'Romanian 1' }),
+      makeServer({ location: 'DE', sname: 'German' }),
+      makeServer({ location: 'RO', sname: 'Romanian 2' }),
     ]
     const result = filterRoServers(servers)
     expect(result).toHaveLength(2)
@@ -43,22 +54,22 @@ describe('filterRoServers', () => {
 
 describe('paginateServers', () => {
   it('returns correct slice for page 1', () => {
-    const servers = Array.from({ length: 45 }, (_, i) => makeServer({ name: `Server ${i}` }))
+    const servers = Array.from({ length: 45 }, (_, i) => makeServer({ sname: `Server ${i}` }))
     const result = paginateServers(servers, 1, 20)
     expect(result).toHaveLength(20)
-    expect(result[0].name).toBe('Server 0')
-    expect(result[19].name).toBe('Server 19')
+    expect(result[0].sname).toBe('Server 0')
+    expect(result[19].sname).toBe('Server 19')
   })
 
   it('returns partial slice for last page', () => {
-    const servers = Array.from({ length: 45 }, (_, i) => makeServer({ name: `Server ${i}` }))
+    const servers = Array.from({ length: 45 }, (_, i) => makeServer({ sname: `Server ${i}` }))
     const result = paginateServers(servers, 3, 20)
     expect(result).toHaveLength(5)
-    expect(result[0].name).toBe('Server 40')
+    expect(result[0].sname).toBe('Server 40')
   })
 
   it('returns empty array when page exceeds total', () => {
-    const servers = Array.from({ length: 10 }, (_, i) => makeServer({ name: `Server ${i}` }))
+    const servers = Array.from({ length: 10 }, (_, i) => makeServer({ sname: `Server ${i}` }))
     expect(paginateServers(servers, 2, 20)).toHaveLength(0)
   })
 })
@@ -83,19 +94,19 @@ describe('countryCodeToFlag', () => {
 
 describe('playerBadgeColor', () => {
   it('returns "green" when under 80% full', () => {
-    expect(playerBadgeColor('3', 20)).toBe('green')
+    expect(playerBadgeColor('3', '20')).toBe('green')
   })
 
   it('returns "orange" at exactly 80% full', () => {
-    expect(playerBadgeColor('16', 20)).toBe('orange')
+    expect(playerBadgeColor('16', '20')).toBe('orange')
   })
 
   it('returns "red" when full', () => {
-    expect(playerBadgeColor('20', 20)).toBe('red')
+    expect(playerBadgeColor('20', '20')).toBe('red')
   })
 
   it('returns "green" for empty server', () => {
-    expect(playerBadgeColor('0', 20)).toBe('green')
+    expect(playerBadgeColor('0', '20')).toBe('green')
   })
 })
 
