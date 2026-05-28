@@ -1,9 +1,15 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import SiteNav from '$lib/components/SiteNav.svelte';
+	import SiteFooter from '$lib/components/SiteFooter.svelte';
 
-	let { children } = $props();
+	const { children } = $props();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-{@render children()}
+<SiteNav />
+<main>
+	{@render children()}
+</main>
+<SiteFooter />
