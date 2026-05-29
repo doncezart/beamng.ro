@@ -18,6 +18,9 @@ Thumbs.db
 !.env.example
 !.env.test
 
+# Subscriber data (persisted locally, not in repo)
+/data/
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

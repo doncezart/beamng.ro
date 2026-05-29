@@ -8,13 +8,14 @@
   import VideoCard from '$lib/components/VideoCard.svelte'
   import RoadmapTimeline from '$lib/components/RoadmapTimeline.svelte'
   import { Button } from '$lib/components/ui/button'
+  import { notifyDialog } from '$lib/state/notify.svelte'
 
   const { data }: { data: PageData } = $props()
 
   const PAGE_SIZE = 20
 
   // Server state
-  let servers = $state<BeamMPServer[]>(data.servers ?? [])
+  const servers = $derived(data.servers ?? [] as BeamMPServer[])
   let page = $state(1)
 
   const sortedServers = $derived(filterRomanianServers(servers))
@@ -23,43 +24,75 @@
 </script>
 
 <svelte:head>
-  <title>{config.brandName} — Comunitatea română de BeamNG.drive</title>
+  <title>{config.brandName} · Comunitatea română de BeamNG.drive</title>
   <meta name="description" content="Comunitatea română de BeamNG.drive multiplayer. Servere, Discord, creatori și evenimente." />
 </svelte:head>
 
 <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
-<section class="bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 pb-28 pt-40 text-white md:pb-36 md:pt-52">
-  <div class="mx-auto max-w-4xl px-4 text-center">
-    <div class="mb-4 inline-block rounded-full bg-primary/20 px-4 py-1.5 text-sm font-medium text-primary">
-      🇷🇴 Comunitate BeamNG.drive
+<section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden bg-zinc-950 text-white">
+  <!-- Background image -->
+  <div class="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat"></div>
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-zinc-950/75"></div>
+
+  <div class="relative mx-auto w-full max-w-4xl px-4 py-24 text-center">
+    <!-- Flag badge -->
+    <div class="mb-5 inline-flex items-center gap-2.5 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary backdrop-blur-sm">
+      <!-- Romanian flag inline SVG -->
+      <svg width="18" height="13" viewBox="0 0 18 13" class="shrink-0 rounded-[2px]" aria-hidden="true">
+        <rect width="6" height="13" fill="#002B7F"/>
+        <rect x="6" width="6" height="13" fill="#FCD116"/>
+        <rect x="12" width="6" height="13" fill="#CE1126"/>
+      </svg>
+      <span>Comunitate BeamNG.drive</span>
     </div>
-    <h1 class="mt-4 text-5xl font-bold leading-tight md:text-6xl">
+
+    <h1 class="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
       BeamNG <span class="text-primary">România</span>
     </h1>
-    <p class="mx-auto mt-6 max-w-xl text-lg text-zinc-300">
-      Cea mai nouă comunitate română de BeamNG.drive multiplayer. Servere, Discord, turnee și creatori de conținut.
+    <p class="mx-auto mt-6 max-w-lg text-lg text-zinc-300">
+      Cea mai nouă comunitate română de BeamNG.drive cu servere active, turnee și creatori de conținut
     </p>
-    <div class="mt-8 flex flex-wrap justify-center gap-4">
-      <Button href={config.discordInvite} target="_blank" rel="noopener noreferrer" size="lg">
-        Alătură-te Discord
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <Button onclick={() => (notifyDialog.open = true)} size="lg" class="shadow-lg shadow-primary/30">
+        Notifică-mă la lansare
       </Button>
-      <Button href="/#servere" variant="outline" size="lg" class="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white">
+      <Button href="/#servere" variant="outline" size="lg" class="border-white/25 bg-black/20 text-white backdrop-blur-sm hover:bg-white/10 hover:text-white">
         Servere BeamMP
       </Button>
     </div>
   </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-400">
+    <span class="text-xs tracking-widest uppercase">Descoperă</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ─── ROADMAP ───────────────────────────────────────────────────────── -->
+<section id="roadmap" class="py-20">
+  <div class="mx-auto max-w-5xl px-4">
+    <div class="mb-10 text-center">
+      <h2 class="text-3xl font-bold">Roadmap</h2>
+      <p class="mt-2 text-zinc-500">Ce pregătim pentru comunitate</p>
+    </div>
+    <RoadmapTimeline />
+  </div>
 </section>
 
 <!-- ─── SERVERE ───────────────────────────────────────────────────────── -->
-<section id="servere" class="py-20">
+<section id="servere" class="bg-zinc-950 py-20">
   <div class="mx-auto max-w-6xl px-4">
     <div class="mb-10 text-center">
-      <h2 class="text-3xl font-bold">Servere BeamMP</h2>
-      <p class="mt-2 text-zinc-500">Servere BeamMP active cu legătură cu România.</p>
+      <h2 class="text-3xl font-bold text-white">Servere BeamMP</h2>
+      <p class="mt-2 text-zinc-400">Servere BeamMP active cu legătură cu România</p>
     </div>
 
     {#if sortedServers.length === 0}
-      <p class="text-center text-zinc-400">Nu s-au putut încărca serverele. Încearcă mai târziu.</p>
+      <p class="text-center text-zinc-500">Nu s-au putut încărca serverele. Încearcă mai târziu.</p>
     {:else}
       <div class="space-y-3">
         {#each pagedServers as server (`${server.ip}:${server.port}`)}
@@ -74,20 +107,48 @@
             size="sm"
             disabled={page <= 1}
             onclick={() => (page = Math.max(1, page - 1))}
+            class="border-zinc-600 bg-transparent text-zinc-300 hover:bg-zinc-700 hover:text-white"
           >
             ← Anterior
           </Button>
-          <span class="text-sm text-zinc-500">Pagina {page} din {totalPages}</span>
+          <span class="text-sm text-zinc-400">Pagina {page} din {totalPages}</span>
           <Button
             variant="outline"
             size="sm"
             disabled={page >= totalPages}
             onclick={() => (page = Math.min(totalPages, page + 1))}
+            class="border-zinc-600 bg-transparent text-zinc-300 hover:bg-zinc-700 hover:text-white"
           >
             Următor →
           </Button>
         </div>
       {/if}
+    {/if}
+  </div>
+</section>
+
+<!-- ─── CREATORI ──────────────────────────────────────────────────────── -->
+<section id="creatori" class="py-20">
+  <div class="mx-auto max-w-6xl px-4">
+    <div class="mb-10 text-center">
+      <h2 class="text-3xl font-bold">Creatori de conținut</h2>
+      <p class="mt-2 text-zinc-500">Creatori români de conținut BeamNG.drive</p>
+    </div>
+
+    {#if creators.length === 0}
+      <div class="rounded-xl border border-dashed border-zinc-300 py-16 text-center text-zinc-400">
+        <p class="text-lg">Încă nu avem creatori înregistrați</p>
+        <p class="mt-1 text-sm">Ești creator BeamNG? Anunță-ne!</p>
+        <Button onclick={() => (notifyDialog.open = true)} variant="outline" class="mt-4">
+          Contactează-ne
+        </Button>
+      </div>
+    {:else}
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {#each creators as creator (creator.videoId)}
+          <VideoCard {creator} />
+        {/each}
+      </div>
     {/if}
   </div>
 </section>
@@ -107,65 +168,16 @@
     </div>
     <h2 class="mt-4 text-3xl font-bold">Server Discord BeamNG România</h2>
     <p class="mx-auto mt-4 max-w-md text-zinc-500">
-      Pregătim un server Discord dedicat comunității. Showcase de mașini, turnee, suport tehnic și o comunitate prietenoasă.
+      Pregătim un server Discord dedicat comunității, cu showcase de mașini, turnee, suport tehnic și o comunitate prietenoasă
     </p>
     <div class="mt-6 flex flex-wrap justify-center gap-2">
       {#each ['🚗 Showcase mașini', '🏆 Turnee', '🔧 Suport modding', '💬 Off-topic'] as feature}
         <span class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600">{feature}</span>
       {/each}
     </div>
-    <Button
-      href={config.discordInvite}
-      target="_blank"
-      rel="noopener noreferrer"
-      size="lg"
-      class="mt-8"
-    >
+    <Button onclick={() => (notifyDialog.open = true)} size="lg" class="mt-8">
       Notifică-mă la lansare
     </Button>
-  </div>
-</section>
-
-<!-- ─── CREATORI ──────────────────────────────────────────────────────── -->
-<section id="creatori" class="py-20">
-  <div class="mx-auto max-w-6xl px-4">
-    <div class="mb-10 text-center">
-      <h2 class="text-3xl font-bold">Creatori de conținut</h2>
-      <p class="mt-2 text-zinc-500">Creatori români de conținut BeamNG.drive.</p>
-    </div>
-
-    {#if creators.length === 0}
-      <div class="rounded-xl border border-dashed border-zinc-300 py-16 text-center text-zinc-400">
-        <p class="text-lg">Încă nu avem creatori înregistrați.</p>
-        <p class="mt-1 text-sm">Ești creator BeamNG? Alătură-te pe Discord!</p>
-        <Button
-          href={config.discordInvite}
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="outline"
-          class="mt-4"
-        >
-          Contactează-ne
-        </Button>
-      </div>
-    {:else}
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {#each creators as creator (creator.videoId)}
-          <VideoCard {creator} />
-        {/each}
-      </div>
-    {/if}
-  </div>
-</section>
-
-<!-- ─── ROADMAP ───────────────────────────────────────────────────────── -->
-<section id="roadmap" class="bg-zinc-50 py-20">
-  <div class="mx-auto max-w-5xl px-4">
-    <div class="mb-10 text-center">
-      <h2 class="text-3xl font-bold">Roadmap</h2>
-      <p class="mt-2 text-zinc-500">Ce pregătim pentru comunitate.</p>
-    </div>
-    <RoadmapTimeline />
   </div>
 </section>
 

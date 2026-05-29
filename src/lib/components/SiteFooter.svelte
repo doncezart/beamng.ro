@@ -1,5 +1,6 @@
 <script lang="ts">
   import { config } from '$lib/config'
+  import { notifyDialog } from '$lib/state/notify.svelte'
 
   const year = new Date().getFullYear()
 </script>
@@ -10,18 +11,16 @@
       <!-- Brand -->
       <div>
         <a href="/" class="text-xl font-bold text-white">{config.brandName}</a>
-        <p class="mt-1 text-sm">Comunitatea română de BeamNG.drive multiplayer.</p>
+        <p class="mt-1 text-sm">Comunitatea română de BeamNG.drive multiplayer</p>
       </div>
 
-      <!-- Discord CTA -->
-      <a
-        href={config.discordInvite}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="shrink-0 text-sm text-primary hover:underline"
+      <!-- Notify CTA -->
+      <button
+        onclick={() => (notifyDialog.open = true)}
+        class="shrink-0 cursor-pointer text-sm text-primary hover:underline"
       >
-        Alătură-te pe Discord →
-      </a>
+        Notifică-mă la lansare →
+      </button>
     </div>
 
     <!-- Bottom: copyright + disclaimer -->
