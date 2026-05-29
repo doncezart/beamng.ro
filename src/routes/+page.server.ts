@@ -28,6 +28,12 @@ export const actions: Actions = {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return fail(400, { error: 'Adresa de email este invalidă' })
     }
+    if (email.length > 254) {
+      return fail(400, { error: 'Adresa de email este prea lungă (max 254 caractere)' })
+    }
+    if (message.length > 1000) {
+      return fail(400, { error: 'Mesajul este prea lung (max 1000 caractere)' })
+    }
 
     // Verify Turnstile
     if (env.TURNSTILE_SECRET_KEY) {

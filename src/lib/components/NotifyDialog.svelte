@@ -10,8 +10,12 @@
   let formError = $state('')
   let submitting = $state(false)
   let success = $state(false)
+  let messageLength = $state(0)
   let container: HTMLDivElement | undefined = $state()
   let widgetId: string | undefined
+
+  const MESSAGE_MAX = 1000
+  const EMAIL_MAX = 254
 
   function close() {
     notifyDialog.open = false
@@ -124,6 +128,7 @@
               type="email"
               required
               autocomplete="email"
+              maxlength={EMAIL_MAX}
               placeholder="adresa@email.com"
               class="mt-1 w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
@@ -131,13 +136,20 @@
 
           <!-- Message -->
           <div>
-            <label for="notify-message" class="block text-sm font-medium text-zinc-700">
-              Mesaj <span class="text-xs font-normal text-zinc-400">(opțional)</span>
-            </label>
+            <div class="flex items-baseline justify-between">
+              <label for="notify-message" class="block text-sm font-medium text-zinc-700">
+                Mesaj <span class="text-xs font-normal text-zinc-400">(opțional)</span>
+              </label>
+              <span class="text-xs {messageLength > MESSAGE_MAX * 0.9 ? 'text-red-500' : 'text-zinc-400'}">
+                {messageLength}/{MESSAGE_MAX}
+              </span>
+            </div>
             <textarea
               id="notify-message"
               name="message"
               rows="3"
+              maxlength={MESSAGE_MAX}
+              oninput={(e) => (messageLength = (e.currentTarget as HTMLTextAreaElement).value.length)}
               placeholder="Spune-ne ceva despre tine sau ce vrei să vezi în comunitate…"
               class="mt-1 w-full resize-none rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             ></textarea>
