@@ -29,7 +29,7 @@
 </svelte:head>
 
 <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
-<section class="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden bg-zinc-950 text-white">
+<section class="relative flex min-h-[70vh] items-center overflow-hidden bg-zinc-950 text-white md:min-h-[calc(100vh-4rem)]">
   <!-- Background image -->
   <div class="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat"></div>
   <!-- Dark overlay -->
